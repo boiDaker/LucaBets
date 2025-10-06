@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucaBets - Official Sports Betting Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #002f6c 0%, #00b4d8 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .odds-btn {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+        }
+        .odds-btn:hover {
+            background: linear-gradient(135deg, #0077b6 0%, #005f73 100%);
+        }
+        .live-indicator {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3ba319d-e653-4deb-9465-16d4eee78e97.png" alt="Circular blue logo with white mountain peaks inspired by Lesotho's Thaba Bosiu heritage site, symbolizing strength and national pride in a modern betting context" class="w-6 h-6 rounded-full" />
+                </div>
+                <span class="text-xl font-bold">LucaBets</span>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+            
+            </nav>
+            <div class="flex space-x-4">
+                <button id="loginBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</button>
+                <button id="signupBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Sign Up</button>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <nav id="mobileMenu" class="md:hidden bg-gray-800 px-4 py-2 hidden">
+            <a href="#" class="block py-2 hover:text-blue-400">Home</a>
+            <a href="sports.html" class="block py-2 hover:text-blue-400">Sports</a>
+            <a href="#" class="block py-2 hover:text-blue-400">Live Betting</a>
+            <a href="#" class="block py-2 hover:text-blue-400">Promo</a>
+            <a href="#" class="block py-2 hover:text-blue-400">Help</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Welcome to LucaBets</h1>
+            <p class="text-lg md:text-xl mb-8">Your trusted sports betting platform. Bet on football, basketball, tennis and more!</p>
+            <button class="odds-btn text-white px-8 py-4 rounded-lg text-lg font-semibold hover:shadow-lg transition">Start Betting Now</button>
+            <div class="mt-8">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5e13ec66-4235-4f3a-a9f2-60a47c33841a.png" alt="Vibrant panoramic view of a crowded football stadium in Maseru, Lesotho, with players on the field, fans cheering under blue skies, capturing the excitement of local sports betting culture" class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Sports Categories -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Explore Sports</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-50 p-6 rounded-lg card-hover text-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b719b5cb-1531-498a-8f8c-e1feec4672a0.png" alt="Round soccer ball on a green field with goalposts in the background, representing football betting with Lesotho's national team's green and blue jersey colors" class="w-16 h-16 mx-auto mb-4" />
+                    <h3 class="text-xl font-semibold mb-2">Football</h3>
+                    <p class="text-gray-600">Bet on Premier League, Ligue 1 and more.</p>
+                    <button class="odds-btn text-white px-4 py-2 rounded mt-4">View Odds</button>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg card-hover text-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6c4b0fe2-9ec9-4574-b68c-2ff265f5114e.png" alt="Basketball on a polished court with hoop and net, styled in Lesotho's flag colors of blue and green for local relevance" class="w-16 h-16 mx-auto mb-4" />
+                    <h3 class="text-xl font-semibold mb-2">Basketball</h3>
+                    <p class="text-gray-600">NBA, EuroLeague odds available.</p>
+                    <button class="odds-btn text-white px-4 py-2 rounded mt-4">View Odds</button>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg card-hover text-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a2e5006b-0da8-4012-b430-16e48131fe1f.png" alt="Tennis racket and ball on a clay court surface, incorporating subtle blue accents inspired by the Lesotho flag for thematic consistency" class="w-16 h-16 mx-auto mb-4" />
+                    <h3 class="text-xl font-semibold mb-2">Tennis</h3>
+                    <p class="text-gray-600">ATP & WTA tournaments.</p>
+                    <button class="odds-btn text-white px-4 py-2 rounded mt-4">View Odds</button>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg card-hover text-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/803a16d3-66be-4113-bd31-f6d825e16c94.png" alt="Cricket bat and ball on a pitch with wickets, featuring green and blue hues to align with Lesotho's aesthetic preferences" class="w-16 h-16 mx-auto mb-4" />
+                    <h3 class="text-xl font-semibold mb-2">Cricket</h3>
+                    <p class="text-gray-600">International matches and leagues.</p>
+                    <button class="odds-btn text-white px-4 py-2 rounded mt-4">View Odds</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Betting Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Live Betting <span class="live-indicator inline-block w-3 h-3 bg-red-500 rounded-full"></span></h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-red-500 text-white px-2 py-1 rounded text-sm">LIVE</span>
+                        <span class="text-gray-500">08:45</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Manchester City vs Liverpool</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Man City (1.50)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Draw (3.20)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Liverpool (6.00)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-red-500 text-white px-2 py-1 rounded text-sm">LIVE</span>
+                        <span class="text-gray-500">09:15</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Lesotho National vs Botswana</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Lesotho (2.10)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Draw (3.50)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Botswana (3.80)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-red-500 text-white px-2 py-1 rounded text-sm">LIVE</span>
+                        <span class="text-gray-500">10:00</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Lions vs Titans (Cricket)</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Lions (-1.5) (1.80)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Titans (+1.5) (1.95)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Match Total 300 (2.00)</span>
+                            <button class="odds-btn text-white px-3 py-1 rounded text-sm">Bet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-8">Exclusive Promotions</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-x-6">
+                <div class="bg-gradient-to-r from-blue-500 to-green-500 text-white p-6 rounded-lg shadow-lg flex-1 max-w-md">
+                    <h3 class="text-xl font-semibold mb-4">100% Welcome Bonus</h3>
+                    <p class="mb-4">Get up to 100 LSL on your first deposit!</p>
+                    <button class="bg-white text-blue-500 px-6 py-2 rounded font-semibold hover:bg-gray-100">Claim Now</button>
+                </div>
+                <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-lg shadow-lg flex-1 max-w-md">
+                    <h3 class="text-xl font-semibold mb-4">Live Betting Boost</h3>
+                    <p class="mb-4">Extra odds on live games this weekend!</p>
+                    <button class="bg-white text-purple-500 px-6 py-2 rounded font-semibold hover:bg-gray-100">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">About Us</h4>
+                    <p>LucaBets is licensed under the Lotteries and Betting Act of 1984. We promote responsible gambling.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <a href="#" class="block hover:text-blue-400">FAQ</a>
+                    <a href="#" class="block hover:text-blue-400">Contact Us</a>
+                    <a href="#" class="block hover:text-blue-400">Responsible Gambling</a>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Payments</h4>
+                    <p>Secure deposits and withdrawals via M-PESA, Ecocash, and crypto.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <p>18+ only. Gambling can be addictive. Play responsibly.</p>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-700">
+                <p>© 2025 LucaBets. All rights reserved. Licensed in Lesotho.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mock login/signup modals (basic alerts for demo)
+        document.getElementById('loginBtn').addEventListener('click', function() {
+    window.location.href = 'login.html';
+});
+
+        document.getElementById('signupBtn').addEventListener('click', function() {
+            window.location.href = 'sign up.html';
+        });
+
+        // Add basic interactivity to bet buttons
+        const betButtons = document.querySelectorAll('.odds-btn');
+        betButtons.forEach(button => {
+            if (button.textContent.trim() === 'Bet' || button.textContent.trim() === 'View Odds') {
+                button.addEventListener('click', function() {
+                    alert('Betting action simulated. In a real platform, this would place a bet.');
+                });
+            }
+        });
+
+        // Simulate live updates (pulse effect already in CSS)
+        setInterval(() => {
+            const liveIndicators = document.querySelectorAll('.text-sm');
+            liveIndicators.forEach(indicator => {
+                if (indicator.textContent === 'LIVE') {
+                    // Simulate minor updates if needed
+                }
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
+</content>
+</create_file>

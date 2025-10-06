@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucaBets - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-card {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+        }
+        .winning-bet {
+            background: linear-gradient(90deg, #10b981 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-left: 4px solid #10b981;
+        }
+        .losing-bet {
+            background: linear-gradient(90deg, #ef4444 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-left: 4px solid #ef4444;
+        }
+        .pending-bet {
+            background: linear-gradient(90deg, #f59e0b 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-left: 4px solid #f59e0b;
+        }
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+        .progress-circle {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3ba319d-e653-4deb-9465-16d4eee78e97.png" alt="BetLesotho Logo" class="w-6 h-6 rounded-full" />
+                </div>
+                <span class="text-xl font-bold">LucaBets</span>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="dashboard.html" class="hover:text-blue-400">Home</a>
+                <a href="sports.html" class="hover:text-blue-400">Sports</a>
+                <a href="live-betting.html" class="hover:text-blue-400">Live Betting</a>
+                <a href="#" class="hover:text-blue-400">Promo</a>
+                <a href="#" class="hover:text-blue-400">Help</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <div class="text-sm text-gray-300">Welcome back</div>
+                    <div class="font-semibold">Demo</div>
+                </div>
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    DM
+                </div>
+                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Dashboard</h1>
+            <p class="text-gray-600">Welcome back! Here's your betting summary</p>
+        </div>
+
+        <!-- Account Balance & Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="gradient-card text-white p-6 rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Account Balance</h3>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold mb-2">2,450 LSL</div>
+                <div class="flex items-center text-sm">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    +12.5% this week
+                </div>
+                <div class="mt-4">
+                    <button class="bg-white bg-opacity-20 text-white px-4 py-2 rounded hover:bg-opacity-30 transition">
+                        Deposit Funds
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Total Bets</h3>
+                    <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800 mb-2">147</div>
+                <div class="text-sm text-gray-500">23 this week</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Win Rate</h3>
+                    <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-800 mb-2">68%</div>
+                <div class="text-sm text-gray-500">Above average</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Profit/Loss</h3>
+                    <svg class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-green-600 mb-2">+850 LSL</div>
+                <div class="text-sm text-gray-500">Last 30 days</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Bets -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-bold text-gray-800">Recent Bets</h2>
+                            <div class="flex space-x-2">
+                                <button class="filter-tab bg-blue-500 text-white px-3 py-1 rounded text-sm" data-filter="all">All</button>
+                                <button class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300" data-filter="pending">Pending</button>
+                                <button class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300" data-filter="won">Won</button>
+                                <button class="filter-tab bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300" data-filter="lost">Lost</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="max-h-96 overflow-y-auto" id="recentBets">
+                        <!-- Winning Bet -->
+                        <div class="bet-item winning-bet p-4 border-b" data-status="won">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Manchester City vs Liverpool</h4>
+                                    <p class="text-sm text-gray-600">Premier League</p>
+                                </div>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">WON</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-500">Bet: </span>
+                                    <span>Man City to Win @ 1.85</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Stake: </span>
+                                    <span>100 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Winnings: </span>
+                                    <span class="font-semibold text-green-600">185 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Date: </span>
+                                    <span>Sept 15, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Bet -->
+                        <div class="bet-item pending-bet p-4 border-b" data-status="pending">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Lakers vs Warriors</h4>
+                                    <p class="text-sm text-gray-600">NBA Regular Season</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">PENDING</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-500">Bet: </span>
+                                    <span>Lakers to Win @ 2.10</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Stake: </span>
+                                    <span>75 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Potential Win: </span>
+                                    <span class="font-semibold text-blue-600">157.50 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Date: </span>
+                                    <span>Sept 18, 2025</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button class="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600">Cash Out: 45 LSL</button>
+                            </div>
+                        </div>
+
+                        <!-- Losing Bet -->
+                        <div class="bet-item losing-bet p-4 border-b" data-status="lost">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Arsenal vs Chelsea</h4>
+                                    <p class="text-sm text-gray-600">Premier League</p>
+                                </div>
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">LOST</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-500">Bet: </span>
+                                    <span>Arsenal to Win @ 2.50</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Stake: </span>
+                                    <span>50 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Result: </span>
+                                    <span class="text-red-600">Lost</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Date: </span>
+                                    <span>Sept 12, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More Bets -->
+                        <div class="bet-item winning-bet p-4 border-b" data-status="won">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Djokovic vs Alcaraz</h4>
+                                    <p class="text-sm text-gray-600">ATP Masters</p>
+                                </div>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">WON</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-500">Bet: </span>
+                                    <span>Djokovic to Win @ 1.75</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Stake: </span>
+                                    <span>200 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Winnings: </span>
+                                    <span class="font-semibold text-green-600">350 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Date: </span>
+                                    <span>Sept 10, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bet-item pending-bet p-4 border-b" data-status="pending">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">India vs Australia</h4>
+                                    <p class="text-sm text-gray-600">T20 Cricket</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">PENDING</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-500">Bet: </span>
+                                    <span>India to Win @ 2.20</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Stake: </span>
+                                    <span>120 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Potential Win: </span>
+                                    <span class="font-semibold text-blue-600">264 LSL</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-500">Date: </span>
+                                    <span>Sept 18, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="px-6 py-4 border-t">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm font-semibold">View All Bet History</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+                            Deposit Funds
+                        </button>
+                        <button class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                            Withdraw Money
+                        </button>
+                        <button class="w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition" onclick="window.location.href='sports.html'">
+                            Place New Bet
+                        </button>
+                        <button class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition" onclick="window.location.href='live-betting.html'">
+                            Live Betting
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Betting Statistics -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Betting Statistics</h3>
+                    
+                    <!-- Win Rate Circle -->
+                    <div class="text-center mb-6">
+                        <div class="relative inline-block">
+                            <svg class="w-24 h-24 progress-circle" viewBox="0 0 36 36">
+                                <path class="circle-bg" fill="none" stroke="#e5e7eb" stroke-width="3"
+                                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                <path class="circle" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="68, 100" stroke-linecap="round"
+                                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-xl font-bold text-gray-800">68%</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Win Rate</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Favorite Sport</span>
+                            <span class="text-sm font-semibold">Football ⚽</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Best Odds Hit</span>
+                            <span class="text-sm font-semibold">12.50</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Longest Streak</span>
+                            <span class="text-sm font-semibold">8 wins</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Member Since</span>
+                            <span class="text-sm font-semibold">Jan 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promotions -->
+                <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold mb-2">Available Bonuses</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white bg-opacity-20 rounded p-3">
+                            <h4 class="font-semibold text-sm">Weekend Boost</h4>
+                            <p class="text-xs opacity-90">Get 25% extra on weekend bets</p>
+                            <button class="bg-white text-purple-600 text-xs px-3 py-1 rounded mt-2 hover:bg-gray-100">Claim</button>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded p-3">
+                            <h4 class="font-semibold text-sm">Loyalty Points</h4>
+                            <p class="text-xs opacity-90">1,250 points available</p>
+                            <button class="bg-white text-purple-600 text-xs px-3 py-1 rounded mt-2 hover:bg-gray-100">Redeem</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Responsible Gambling -->
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-yellow-600 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-yellow-800">Responsible Gambling</h4>
+                            <p class="text-xs text-yellow-700 mt-1">Set daily limits and take breaks when needed.</p>
+                            <button class="text-yellow-800 hover:text-yellow-900 text-xs font-semibold mt-2">Set Limits</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Chart Section -->
+        <div class="mt-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Betting Performance</h2>
+                    <div class="flex space-x-2">
+                        <button class="chart-period bg-blue-500 text-white px-3 py-1 rounded text-sm" data-period="7">7 Days</button>
+                        <button class="chart-period bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300" data-period="30">30 Days</button>
+                        <button class="chart-period bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-300" data-period="90">90 Days</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container bg-gray-50 rounded-lg p-4">
+                    <canvas id="performanceChart" class="w-full h-full"></canvas>
+                    <!-- Simplified chart representation -->
+                    <div class="flex items-end justify-between h-32 space-x-2">
+                        <div class="bg-green-500 rounded-t" style="height: 60%; width: 12%;" title="Mon: +45 LSL"></div>
+                        <div class="bg-red-500 rounded-t" style="height: 30%; width: 12%;" title="Tue: -25 LSL"></div>
+                        <div class="bg-green-500 rounded-t" style="height: 80%; width: 12%;" title="Wed: +85 LSL"></div>
+                        <div class="bg-green-500 rounded-t" style="height: 45%; width: 12%;" title="Thu: +35 LSL"></div>
+                        <div class="bg-red-500 rounded-t" style="height: 20%; width: 12%;" title="Fri: -15 LSL"></div>
+                        <div class="bg-green-500 rounded-t" style="height: 90%; width: 12%;" title="Sat: +125 LSL"></div>
+                        <div class="bg-green-500 rounded-t" style="height: 70%; width: 12%;" title="Sun: +65 LSL"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                        <span>Sun</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">+315</div>
+                        <div class="text-sm text-gray-600">Total Profit (LSL)</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600">23</div>
+                        <div class="text-sm text-gray-600">Bets Placed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-purple-600">16</div>
+                        <div class="text-sm text-gray-600">Bets Won</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-orange-600">2.1</div>
+                        <div class="text-sm text-gray-600">Avg Odds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Account Settings</h3>
+                    <button id="closeSettings" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Daily Bet Limit</label>
+                        <input type="number" value="500" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Weekly Bet Limit</label>
+                        <input type="number" value="2000" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">Email Notifications</span>
+                        <button class="relative inline-flex items-center h-6 rounded-full w-11 bg-blue-600">
+                            <span class="inline-block w-4 h-4 transform translate-x-6 bg-white rounded-full transition"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-700">SMS Notifications</span>
+                        <button class="relative inline-flex items-center h-6 rounded-full w-11 bg-gray-200">
+                            <span class="inline-block w-4 h-4 transform translate-x-1 bg-white rounded-full transition"></span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex space-x-3">
+                    <button class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Save Changes</button>
+                    <button id="cancelSettings" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter tabs functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.filter-tab').forEach(t => {
+                    t.classList.remove('bg-blue-500', 'text-white');
+                    t.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                this.classList.remove('bg-gray-200', 'text-gray-700');
+                this.classList.add('bg-blue-500', 'text-white');
+                
+                const period = this.dataset.period;
+                updateChart(period);
+            });
+        });
+
+        function updateChart(period) {
+            // Simulate chart update
+            console.log(`Updating chart for ${period} days`);
+            // In a real app, this would fetch new data and update the chart
+        }
+
+        // Cash out functionality
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.textContent.includes('Cash Out')) {
+                btn.addEventListener('click', function() {
+                    const amount = this.textContent.match(/\d+/)[0];
+                    if (confirm(`Cash out this bet for ${amount} LSL?`)) {
+                        alert(`Successfully cashed out for ${amount} LSL`);
+                        this.closest('.bet-item').style.opacity = '0.6';
+                        this.textContent = 'Cashed Out';
+                        this.disabled = true;
+                        this.classList.remove('bg-red-500', 'hover:bg-red-600');
+                        this.classList.add('bg-gray-400');
+                    }
+                });
+            }
+        });
+
+        // Settings modal functionality
+        const settingsModal = document.getElementById('settingsModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const cancelSettings = document.getElementById('cancelSettings');
+
+        // Add settings button (you can attach this to any settings trigger)
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'Set Limits') {
+                settingsModal.classList.remove('hidden');
+            }
+        });
+
+        closeSettings.addEventListener('click', () => {
+            settingsModal.classList.add('hidden');
+        });
+
+        cancelSettings.addEventListener('click', () => {
+            settingsModal.classList.add('hidden');
+        });
+
+        // Toggle switches functionality
+        document.querySelectorAll('button[class*="rounded-full"]').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const span = this.querySelector('span');
+                const isActive = this.classList.contains('bg-blue-600');
+                
+                if (isActive) {
+                    this.classList.remove('bg-blue-600');
+                    this.classList.add('bg-gray-200');
+                    span.classList.remove('translate-x-6');
+                    span.classList.add('translate-x-1');
+                } else {
+                    this.classList.remove('bg-gray-200');
+                    this.classList.add('bg-blue-600');
+                    span.classList.remove('translate-x-1');
+                    span.classList.add('translate-x-6');
+                }
+            });
+        });
+
+        // Deposit/Withdraw functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'Deposit Funds') {
+                const amount = prompt('Enter deposit amount (LSL):');
+                if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                    alert(`Deposit of ${amount} LSL initiated. Processing...`);
+                    // Simulate balance update
+                    setTimeout(() => {
+                        alert('Deposit successful!');
+                        location.reload(); // In real app, update balance dynamically
+                    }, 2000);
+                }
+            }
+            
+            if (e.target.textContent === 'Withdraw Money') {
+                const amount = prompt('Enter withdrawal amount (LSL):');
+                if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                    if (parseFloat(amount) > 2450) {
+                        alert('Insufficient funds!');
+                    } else {
+                        alert(`Withdrawal of ${amount} LSL initiated. Processing...`);
+                        setTimeout(() => {
+                            alert('Withdrawal request submitted. Processing time: 1-3 business days.');
+                        }, 1000);
+                    }
+                }
+            }
+        });
+
+        // Bonus claim functionality
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.textContent === 'Claim') {
+                btn.addEventListener('click', function() {
+                    const bonusType = this.closest('div').querySelector('h4').textContent;
+                    alert(`${bonusType} claimed successfully!`);
+                    this.textContent = 'Claimed';
+                    this.disabled = true;
+                    this.classList.add('opacity-50');
+                });
+            }
+            
+            if (btn.textContent === 'Redeem') {
+                btn.addEventListener('click', function() {
+                    const points = prompt('Enter points to redeem (Available: 1,250):');
+                    if (points && !isNaN(points) && parseInt(points) > 0) {
+                        if (parseInt(points) > 1250) {
+                            alert('Insufficient loyalty points!');
+                        } else {
+                            const lsl = (parseInt(points) * 0.1).toFixed(2);
+                            alert(`Redeemed ${points} points for ${lsl} LSL bonus!`);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Real-time updates simulation
+        function updateLiveData() {
+            // Simulate real-time balance updates
+            const balanceElement = document.querySelector('.gradient-card .text-3xl');
+            if (balanceElement) {
+                const currentBalance = parseFloat(balanceElement.textContent.replace(/[^\d.]/g, ''));
+                const change = (Math.random() - 0.5) * 10; // Random change
+                const newBalance = Math.max(0, currentBalance + change);
+                balanceElement.textContent = `${newBalance.toFixed(0)} LSL`;
+            }
+            
+            // Update pending bets status occasionally
+            const pendingBets = document.querySelectorAll('[data-status="pending"]');
+            pendingBets.forEach(bet => {
+                if (Math.random() < 0.05) { // 5% chance to settle
+                    const isWin = Math.random() < 0.6; // 60% win rate
+                    const statusBadge = bet.querySelector('span');
+                    
+                    if (isWin) {
+                        bet.className = 'bet-item winning-bet p-4 border-b';
+                        bet.dataset.status = 'won';
+                        statusBadge.className = 'bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full';
+                        statusBadge.textContent = 'WON';
+                        
+                        // Update winnings display
+                        const potentialWin = bet.querySelector('.text-blue-600');
+                        if (potentialWin) {
+                            potentialWin.className = 'font-semibold text-green-600';
+                            potentialWin.textContent = potentialWin.textContent.replace('Potential Win:', 'Winnings:');
+                        }
+                    } else {
+                        bet.className = 'bet-item losing-bet p-4 border-b';
+                        bet.dataset.status = 'lost';
+                        statusBadge.className = 'bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full';
+                        statusBadge.textContent = 'LOST';
+                        
+                        // Update result display
+                        const potentialWin = bet.querySelector('.text-blue-600');
+                        if (potentialWin) {
+                            potentialWin.className = 'text-red-600';
+                            potentialWin.textContent = 'Lost';
+                        }
+                    }
+                    
+                    // Remove cash out button
+                    const cashOutBtn = bet.querySelector('button[class*="bg-red-500"]');
+                    if (cashOutBtn) {
+                        cashOutBtn.remove();
+                    }
+                }
+            });
+        }
+
+        // Chart bar hover effects
+        document.querySelectorAll('[title]').forEach(bar => {
+            bar.addEventListener('mouseenter', function() {
+                this.style.opacity = '0.8';
+                // Show tooltip (simplified)
+                const tooltip = document.createElement('div');
+                tooltip.className = 'absolute bg-black text-white text-xs rounded py-1 px-2 z-10';
+                tooltip.textContent = this.getAttribute('title');
+                document.body.appendChild(tooltip);
+                
+                const rect = this.getBoundingClientRect();
+                tooltip.style.top = (rect.top - 30) + 'px';
+                tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+                
+                setTimeout(() => tooltip.remove(), 2000);
+            });
+            
+            bar.addEventListener('mouseleave', function() {
+                this.style.opacity = '1';
+            });
+        });
+
+        // Logout functionality
+        document.querySelector('button').addEventListener('click', function() {
+            if (this.textContent === 'Logout') {
+                if (confirm('Are you sure you want to logout?')) {
+                    alert('Logged out successfully!');
+                    window.location.href = 'code.html';
+                }
+            }
+        });
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start live updates
+            setInterval(updateLiveData, 30000); // Update every 30 seconds
+            
+            // Show welcome message
+            setTimeout(() => {
+                if (!localStorage.getItem('dashboardWelcomeShown')) {
+                    alert('Welcome to your dashboard! Here you can track your bets, manage your account, and view your performance.');
+                    localStorage.setItem('dashboardWelcomeShown', 'true');
+                }
+            }, 1000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Press 'D' for deposit
+            if (e.key === 'd' || e.key === 'D') {
+                document.querySelector('button').click(); // First deposit button
+            }
+            
+            // Press 'B' for new bet
+            if (e.key === 'b' || e.key === 'B') {
+                window.location.href = 'sports.html';
+            }
+            
+            // Press 'L' for live betting
+            if (e.key === 'l' || e.key === 'L') {
+                window.location.href = 'live-betting.html';
+            }
+        });
+
+        // Progressive Web App functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                // Service worker registration failed, ignore in demo
+            });
+        }
+
+        // Responsive chart adjustments
+        function adjustChartForMobile() {
+            if (window.innerWidth < 768) {
+                const chartBars = document.querySelectorAll('.chart-container > div > div');
+                chartBars.forEach(bar => {
+                    bar.style.width = '13%';
+                });
+            }
+        }
+
+        window.addEventListener('resize', adjustChartForMobile);
+        adjustChartForMobile(); // Initial call
+    </script>
+</body>
+</html>

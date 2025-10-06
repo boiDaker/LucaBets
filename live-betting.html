@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucaBets - Live Betting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .live-indicator {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .odds-btn {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+            transition: all 0.3s ease;
+        }
+        .odds-btn:hover {
+            background: linear-gradient(135deg, #0077b6 0%, #005f73 100%);
+            transform: scale(1.05);
+        }
+        .score-update {
+            animation: scoreFlash 1s ease-in-out;
+        }
+        @keyframes scoreFlash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: #fef3c7; }
+        }
+        .match-live {
+            border-left: 4px solid #ef4444;
+        }
+        .stats-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .video-container {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3ba319d-e653-4deb-9465-16d4eee78e97.png" alt="BetLesotho Logo" class="w-6 h-6 rounded-full" />
+                </div>
+                <span class="text-xl font-bold">LucaBets</span>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="dashboard.html" class="hover:text-blue-400">Dashboard</a>
+                <a href="sports.html" class="hover:text-blue-400">Sports</a>
+                <a href="live-betting.html" class="text-blue-400">Live Betting</a>
+                <a href="#" class="hover:text-blue-400">Promo</a>
+                <a href="#" class="hover:text-blue-400">Help</a>
+            </nav>
+            <div class="flex space-x-4">
+                <div class="bg-red-500 text-white px-3 py-2 rounded-full text-sm flex items-center">
+                    <span class="live-indicator inline-block w-2 h-2 bg-white rounded-full mr-2"></span>
+                    248 LIVE
+                </div>
+                <button id="logoutBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Live Betting Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Live Betting</h1>
+                    <p class="text-gray-600">Bet on live sports events with real-time odds</p>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mt-4 md:mt-0">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600" id="liveEventsCount">248</div>
+                        <div class="text-sm text-gray-600">Live Now</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600" id="totalBetsCount">12,847</div>
+                        <div class="text-sm text-gray-600">Live Bets</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="averageOdds">2.45</div>
+                        <div class="text-sm text-gray-600">Avg Odds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button class="tab-btn bg-red-500 text-white px-4 py-2 rounded-lg" data-sport="all">
+                    All Live (248)
+                </button>
+                <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300" data-sport="football">
+                    ⚽ Football (89)
+                </button>
+                <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300" data-sport="basketball">
+                    🏀 Basketball (45)
+                </button>
+                <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300" data-sport="tennis">
+                    🎾 Tennis (67)
+                </button>
+                <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300" data-sport="cricket">
+                    🏏 Cricket (32)
+                </button>
+                <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300" data-sport="popular">
+                    🔥 Most Popular
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Featured Live Match -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg mb-6">
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-t-lg">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-bold">Featured Live Match</h2>
+                            <div class="flex items-center space-x-2">
+                                <span class="live-indicator inline-block w-3 h-3 bg-white rounded-full"></span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- Match Header -->
+                        <div class="text-center mb-6">
+                            <div class="text-sm text-gray-500 mb-2">Premier League • 78' + 2 min</div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <div class="text-center">
+                                    <img src="https://via.placeholder.com/60x60/3B82F6/FFFFFF?text=MCI" alt="Manchester City" class="w-16 h-16 mx-auto mb-2 rounded-full">
+                                    <div class="font-bold">Manchester City</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold mb-2 score-update" id="featuredScore">2 - 1</div>
+                                    <div class="text-sm text-gray-500">78' + 2</div>
+                                </div>
+                                <div class="text-center">
+                                    <img src="https://via.placeholder.com/60x60/DC2626/FFFFFF?text=LIV" alt="Liverpool" class="w-16 h-16 mx-auto mb-2 rounded-full">
+                                    <div class="font-bold">Liverpool</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Stream Placeholder -->
+                        <div class="video-container rounded-lg p-8 mb-6 text-center text-white">
+                            <div class="mb-4">
+                                <svg class="w-16 h-16 mx-auto mb-4 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                                </svg>
+                                <h3 class="text-lg font-semibold mb-2">Live Stream Available</h3>
+                                <p class="text-sm opacity-75">Watch the match live while placing your bets</p>
+                            </div>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg transition">
+                                Watch Live Stream
+                            </button>
+                        </div>
+
+                        <!-- Live Stats -->
+                        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                            <h4 class="font-semibold mb-4">Live Match Stats</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Possession</span>
+                                    <div class="flex items-center space-x-2 flex-1 mx-4">
+                                        <span class="text-sm font-bold">62%</span>
+                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                            <div class="stats-bar bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold">38%</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Shots on Target</span>
+                                    <div class="flex items-center space-x-2 flex-1 mx-4">
+                                        <span class="text-sm font-bold">4</span>
+                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                            <div class="stats-bar bg-green-500 h-2 rounded-full" style="width: 67%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold">2</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Corners</span>
+                                    <div class="flex items-center space-x-2 flex-1 mx-4">
+                                        <span class="text-sm font-bold">7</span>
+                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                            <div class="stats-bar bg-yellow-500 h-2 rounded-full" style="width: 70%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Betting Options -->
+                        <div class="space-y-4">
+                            <div class="border rounded-lg p-4">
+                                <h5 class="font-semibold mb-3">Next Goal Scorer</h5>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">Haaland</div>
+                                        <div class="font-bold">2.80</div>
+                                    </button>
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">Salah</div>
+                                        <div class="font-bold">3.20</div>
+                                    </button>
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">De Bruyne</div>
+                                        <div class="font-bold">4.50</div>
+                                    </button>
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">No Goal</div>
+                                        <div class="font-bold">5.20</div>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded-lg p-4">
+                                <h5 class="font-semibold mb-3">Next Corner</h5>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">Man City</div>
+                                        <div class="font-bold">1.75</div>
+                                    </button>
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">Liverpool</div>
+                                        <div class="font-bold">2.10</div>
+                                    </button>
+                                    <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg">
+                                        <div class="text-xs opacity-80">No Corner</div>
+                                        <div class="font-bold">8.50</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Matches Sidebar -->
+            <div>
+                <div class="bg-white rounded-lg shadow-lg">
+                    <div class="bg-gray-50 px-6 py-4 rounded-t-lg border-b">
+                        <h3 class="font-bold text-lg">All Live Matches</h3>
+                        <p class="text-sm text-gray-600">Tap any match to view details</p>
+                    </div>
+                    
+                    <div class="max-h-screen overflow-y-auto" id="liveMatchesList">
+                        <!-- Football Match -->
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="football">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE 65'</span>
+                                </div>
+                                <span class="text-xs text-gray-500">La Liga</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Barcelona</span>
+                                    <span class="font-bold">1</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Real Madrid</span>
+                                    <span class="font-bold">2</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-1 text-xs">
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">1.90</button>
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">3.40</button>
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">4.20</button>
+                            </div>
+                        </div>
+
+                        <!-- Basketball Match -->
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="basketball">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE Q3 8:45</span>
+                                </div>
+                                <span class="text-xs text-gray-500">NBA</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Lakers</span>
+                                    <span class="font-bold">89</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Warriors</span>
+                                    <span class="font-bold">92</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-1 text-xs">
+                                <button class="bg-green-500 text-white py-1 px-2 rounded">Lakers 2.1</button>
+                                <button class="bg-green-500 text-white py-1 px-2 rounded">Warriors 1.7</button>
+                            </div>
+                        </div>
+
+                        <!-- Tennis Match -->
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="tennis">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE Set 2</span>
+                                </div>
+                                <span class="text-xs text-gray-500">ATP</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Djokovic</span>
+                                    <span class="font-bold">6-4, 3-2</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Alcaraz</span>
+                                    <span class="font-bold">4-6, 2-3</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-1 text-xs">
+                                <button class="bg-purple-500 text-white py-1 px-2 rounded">Djokovic 1.45</button>
+                                <button class="bg-purple-500 text-white py-1 px-2 rounded">Alcaraz 2.75</button>
+                            </div>
+                        </div>
+
+                        <!-- Cricket Match -->
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="cricket">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE Over 15.2</span>
+                                </div>
+                                <span class="text-xs text-gray-500">T20</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">India</span>
+                                    <span class="font-bold">142/3</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Australia</span>
+                                    <span class="font-bold">Target: 165</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-1 text-xs">
+                                <button class="bg-orange-500 text-white py-1 px-2 rounded">India 3.20</button>
+                                <button class="bg-orange-500 text-white py-1 px-2 rounded">Australia 1.35</button>
+                            </div>
+                        </div>
+
+                        <!-- More matches... -->
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="football">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE 23'</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Serie A</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Juventus</span>
+                                    <span class="font-bold">0</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">AC Milan</span>
+                                    <span class="font-bold">1</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-1 text-xs">
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">2.50</button>
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">3.10</button>
+                                <button class="bg-blue-500 text-white py-1 px-2 rounded">2.90</button>
+                            </div>
+                        </div>
+
+                        <div class="live-match match-live p-4 border-b hover:bg-gray-50 cursor-pointer" data-sport="basketball">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-xs text-red-600 font-semibold">LIVE Q2 3:21</span>
+                                </div>
+                                <span class="text-xs text-gray-500">EuroLeague</span>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Real Madrid</span>
+                                    <span class="font-bold">45</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="font-medium">Barcelona</span>
+                                    <span class="font-bold">41</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-1 text-xs">
+                                <button class="bg-green-500 text-white py-1 px-2 rounded">Madrid 1.85</button>
+                                <button class="bg-green-500 text-white py-1 px-2 rounded">Barca 1.95</button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 text-center">
+                            <button id="loadMoreLive" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                                Load More Live Matches
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Bet Slip -->
+                <div class="bg-white rounded-lg shadow-lg mt-6" id="quickBetSlip">
+                    <div class="bg-green-50 px-4 py-3 rounded-t-lg border-b">
+                        <h3 class="font-semibold text-green-800">Quick Bet Slip</h3>
+                    </div>
+                    <div class="p-4">
+                        <div id="quickBetContent" class="text-center text-gray-500 py-4">
+                            <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            <p class="text-sm">Click on odds to add quick bets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Live Bets -->
+        <div class="bg-white rounded-lg shadow-lg mt-6 p-6">
+            <h2 class="text-xl font-bold mb-4">Popular Live Bets Right Now</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">Next Goal</span>
+                        <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">Man City vs Liverpool</div>
+                    <button class="odds-btn text-white w-full py-2 rounded text-sm hover:shadow-lg">
+                        <div class="font-bold">Under 90 mins @ 1.45</div>
+                    </button>
+                    <div class="text-xs text-center mt-1 text-gray-500">2,847 bets</div>
+                </div>
+
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">Next Point</span>
+                        <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">Lakers vs Warriors</div>
+                    <button class="odds-btn text-white w-full py-2 rounded text-sm hover:shadow-lg">
+                        <div class="font-bold">Lakers @ 1.90</div>
+                    </button>
+                    <div class="text-xs text-center mt-1 text-gray-500">1,923 bets</div>
+                </div>
+
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">Set Winner</span>
+                        <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">Djokovic vs Alcaraz</div>
+                    <button class="odds-btn text-white w-full py-2 rounded text-sm hover:shadow-lg">
+                        <div class="font-bold">Djokovic Set 2 @ 1.65</div>
+                    </button>
+                    <div class="text-xs text-center mt-1 text-gray-500">1,456 bets</div>
+                </div>
+
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium">Next Wicket</span>
+                        <span class="live-indicator inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">India vs Australia</div>
+                    <button class="odds-btn text-white w-full py-2 rounded text-sm hover:shadow-lg">
+                        <div class="font-bold">Under 5 overs @ 2.10</div>
+                    </button>
+                    <div class="text-xs text-center mt-1 text-gray-500">892 bets</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Notifications -->
+    <div id="liveNotifications" class="fixed top-20 right-4 z-50 space-y-2"></div>
+
+    <!-- Bet Slip Modal -->
+    <div id="betSlipModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Live Bet Slip</h3>
+                    <button id="closeBetSlip" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="betSlipContent">
+                    <p class="text-gray-500 text-center py-8">No live bets selected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let liveBets = [];
+        let liveUpdateInterval;
+        let notificationId = 0;
+
+      // Mock login/signup modals (basic alerts for demo)
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+    window.location.href = 'code.html';
+  });
+
+        // Tab filtering
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('bg-red-500', 'text-white');
+                    b.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                this.classList.remove('bg-gray-200', 'text-gray-700');
+                this.classList.add('bg-red-500', 'text-white');
+                
+                filterLiveMatches(this.dataset.sport);
+            });
+        });
+
+        function filterLiveMatches(sport) {
+            const matches = document.querySelectorAll('.live-match');
+            matches.forEach(match => {
+                if (sport === 'all' || match.dataset.sport === sport || sport === 'popular') {
+                    match.style.display = 'block';
+                } else {
+                    match.style.display = 'none';
+                }
+            });
+        }
+
+        // Live match selection
+        document.querySelectorAll('.live-match').forEach(match => {
+            match.addEventListener('click', function() {
+                // Remove active class from all matches
+                document.querySelectorAll('.live-match').forEach(m => {
+                    m.classList.remove('border-blue-500', 'bg-blue-50');
+                });
+                
+                // Add active class to selected match
+                this.classList.add('border-blue-500', 'bg-blue-50');
+                
+                // Update featured match (simplified for demo)
+                updateFeaturedMatch(this);
+            });
+        });
+
+        function updateFeaturedMatch(selectedMatch) {
+            const teams = selectedMatch.querySelectorAll('.font-medium');
+            if (teams.length >= 2) {
+                showNotification(`Now viewing: ${teams[0].textContent} vs ${teams[1].textContent}`, 'info');
+            }
+        }
+
+        // Live notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.id = `notification-${notificationId++}`;
+            notification.className = `notification transform transition-all duration-300 translate-x-full`;
+            
+            let bgColor, icon;
+            switch(type) {
+                case 'goal':
+                    bgColor = 'bg-green-500';
+                    icon = '⚽';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500';
+                    icon = '⚠️';
+                    break;
+                case 'info':
+                default:
+                    bgColor = 'bg-blue-500';
+                    icon = 'ℹ️';
+            }
+            
+            notification.innerHTML = `
+                <div class="${bgColor} text-white p-3 rounded-lg shadow-lg max-w-sm">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-lg">${icon}</span>
+                        <span class="text-sm font-medium">${message}</span>
+                        <button onclick="closeNotification('${notification.id}')" class="ml-auto text-white hover:text-gray-200">×</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('liveNotifications').appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                closeNotification(notification.id);
+            }, 5000);
+        }
+
+        function closeNotification(id) {
+            const notification = document.getElementById(id);
+            if (notification) {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        }
+
+        // Live updates simulation
+        function startLiveUpdates() {
+            liveUpdateInterval = setInterval(() => {
+                updateLiveScores();
+                updateLiveOdds();
+                simulateLiveEvents();
+            }, 3000);
+        }
+
+        function updateLiveScores() {
+            // Update featured match score occasionally
+            if (Math.random() < 0.1) { // 10% chance
+                const scoreElement = document.getElementById('featuredScore');
+                const currentScore = scoreElement.textContent.split(' - ');
+                const homeScore = parseInt(currentScore[0]);
+                const awayScore = parseInt(currentScore[1]);
+                
+                if (Math.random() < 0.5) {
+                    scoreElement.textContent = `${homeScore + 1} - ${awayScore}`;
+                    scoreElement.classList.add('score-update');
+                    showNotification('⚽ GOAL! Manchester City scores!', 'goal');
+                } else {
+                    scoreElement.textContent = `${homeScore} - ${awayScore + 1}`;
+                    scoreElement.classList.add('score-update');
+                    showNotification('⚽ GOAL! Liverpool scores!', 'goal');
+                }
+                
+                setTimeout(() => {
+                    scoreElement.classList.remove('score-update');
+                }, 1000);
+            }
+        }
+
+        function updateLiveOdds() {
+            // Update odds randomly
+            const oddsButtons = document.querySelectorAll('.odds-btn .font-bold');
+            oddsButtons.forEach(button => {
+                if (Math.random() < 0.2) { // 20% chance to update
+                    const currentOdds = parseFloat(button.textContent);
+                    const change = (Math.random() - 0.5) * 0.2;
+                    const newOdds = Math.max(1.01, currentOdds + change);
+                    
+                    button.textContent = newOdds.toFixed(2);
+                    button.parentElement.classList.add('animate-pulse');
+                    
+                    setTimeout(() => {
+                        button.parentElement.classList.remove('animate-pulse');
+                    }, 1000);
+                }
+            });
+        }
+
+        function simulateLiveEvents() {
+            const events = [
+                'Yellow Card!',
+                'Corner Kick',
+                'Free Kick',
+                'Substitution',
+                'Injury Time',
+                'VAR Check'
+            ];
+            
+            if (Math.random() < 0.15) { // 15% chance for event
+                const randomEvent = events[Math.floor(Math.random() * events.length)];
+                showNotification(randomEvent, 'info');
+            }
+        }
+
+        // Quick bet functionality
+        function addQuickBet(matchInfo, selection, odds) {
+            const bet = {
+                id: Date.now(),
+                match: matchInfo,
+                selection: selection,
+                odds: parseFloat(odds),
+                stake: 10
+            };
+            
+            liveBets.push(bet);
+            updateQuickBetSlip();
+            showNotification(`Added: ${selection} @ ${odds}`, 'info');
+        }
+
+        function updateQuickBetSlip() {
+            const content = document.getElementById('quickBetContent');
+            
+            if (liveBets.length === 0) {
+                content.innerHTML = `
+                    <div class="text-center text-gray-500 py-4">
+                        <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <p class="text-sm">Click on odds to add quick bets</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="space-y-2">';
+            let totalStake = 0;
+            let potentialWin = 0;
+            
+            liveBets.forEach(bet => {
+                totalStake += bet.stake;
+                potentialWin += bet.odds * bet.stake;
+                
+                html += `
+                    <div class="bg-gray-50 p-2 rounded text-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-medium text-xs">${bet.selection}</span>
+                            <button onclick="removeQuickBet(${bet.id})" class="text-red-500 hover:text-red-700">×</button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-600">${bet.odds}</span>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" value="${bet.stake}" min="1" max="1000" 
+                                       class="w-12 text-xs p-1 border rounded"
+                                       onchange="updateQuickStake(${bet.id}, this.value)">
+                                <span class="text-xs">LSL</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                </div>
+                <div class="mt-3 pt-3 border-t text-sm">
+                    <div class="flex justify-between mb-1">
+                        <span>Total Stake:</span>
+                        <span class="font-bold">${totalStake} LSL</span>
+                    </div>
+                    <div class="flex justify-between mb-3">
+                        <span>Potential Win:</span>
+                        <span class="font-bold text-green-600">${potentialWin.toFixed(2)} LSL</span>
+                    </div>
+                    <button onclick="placeLiveBets()" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
+                        Place Live Bets
+                    </button>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+
+        function removeQuickBet(id) {
+            liveBets = liveBets.filter(bet => bet.id !== id);
+            updateQuickBetSlip();
+        }
+
+        function updateQuickStake(id, newStake) {
+            const bet = liveBets.find(b => b.id === id);
+            if (bet) {
+                bet.stake = parseFloat(newStake) || 1;
+                updateQuickBetSlip();
+            }
+        }
+
+        function placeLiveBets() {
+            if (liveBets.length === 0) return;
+            
+            const totalStake = liveBets.reduce((sum, bet) => sum + bet.stake, 0);
+            const potentialWin = liveBets.reduce((sum, bet) => sum + (bet.odds * bet.stake), 0);
+            
+            if (confirm(`Place ${liveBets.length} live bet(s) for ${totalStake} LSL?\nPotential win: ${potentialWin.toFixed(2)} LSL`)) {
+                showNotification(`${liveBets.length} live bets placed successfully!`, 'goal');
+                liveBets = [];
+                updateQuickBetSlip();
+            }
+        }
+
+        // Add event listeners for odds buttons
+        document.querySelectorAll('.odds-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const matchCard = this.closest('.live-match, .p-6');
+                let matchInfo = 'Live Match';
+                
+                if (matchCard) {
+                    const teams = matchCard.querySelectorAll('.font-medium, .font-bold, .font-semibold');
+                    if (teams.length >= 2) {
+                        matchInfo = `${teams[0].textContent} vs ${teams[1].textContent}`;
+                    }
+                }
+                
+                const selection = this.querySelector('.text-xs').textContent;
+                const odds = this.querySelector('.font-bold').textContent;
+                
+                addQuickBet(matchInfo, selection, odds);
+            });
+        });
+
+        // Load more live matches
+        document.getElementById('loadMoreLive').addEventListener('click', function() {
+            this.textContent = 'Loading...';
+            
+            setTimeout(() => {
+                this.textContent = 'Load More Live Matches';
+                showNotification('More live matches loaded!', 'info');
+            }, 1500);
+        });
+
+        // Update live counts
+        function updateLiveCounts() {
+            const liveCount = document.getElementById('liveEventsCount');
+            const betsCount = document.getElementById('totalBetsCount');
+            const oddsCount = document.getElementById('averageOdds');
+            
+            // Simulate changing numbers
+            const currentLive = parseInt(liveCount.textContent);
+            const currentBets = parseInt(betsCount.textContent.replace(/,/g, ''));
+            
+            liveCount.textContent = Math.max(200, currentLive + Math.floor(Math.random() * 10 - 5));
+            betsCount.textContent = (currentBets + Math.floor(Math.random() * 100)).toLocaleString();
+            
+            const newOdds = 2.45 + (Math.random() - 0.5) * 0.5;
+            oddsCount.textContent = newOdds.toFixed(2);
+        }
+
+        // Initialize live betting
+        document.addEventListener('DOMContentLoaded', function() {
+            startLiveUpdates();
+            updateQuickBetSlip();
+            
+            // Update counts every 10 seconds
+            setInterval(updateLiveCounts, 10000);
+            
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification('Welcome to Live Betting! 248 events available now.', 'info');
+            }, 1000);
+        });
+
+        // Cleanup when page is closed
+        window.addEventListener('beforeunload', function() {
+            if (liveUpdateInterval) {
+                clearInterval(liveUpdateInterval);
+            }
+        });
+
+        // Watch live stream simulation
+        document.querySelector('.video-container button').addEventListener('click', function() {
+            alert('Live stream feature would open here. This requires video streaming integration.');
+        });
+    </script>
+</body>
+</html>

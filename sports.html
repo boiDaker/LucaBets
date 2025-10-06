@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucaBets - Sports Betting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .odds-btn {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+        }
+        .odds-btn:hover {
+            background: linear-gradient(135deg, #0077b6 0%, #005f73 100%);
+        }
+        .match-card {
+            transition: all 0.3s ease;
+        }
+        .match-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .filter-active {
+            background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+            color: white;
+        }
+        .league-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-4 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3ba319d-e653-4deb-9465-16d4eee78e97.png" alt="BetLesotho Logo" class="w-6 h-6 rounded-full" />
+                </div>
+                <span class="text-xl font-bold">LucaBets</span>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="dashboard.html" class="hover:text-blue-400">Dashboard</a>
+                <a href="sports.html" class="text-blue-400">Sports</a>
+                <a href="live-betting.html" class="hover:text-blue-400">Live Betting</a>
+                <a href="#" class="hover:text-blue-400">Promo</a>
+                <a href="#" class="hover:text-blue-400">Help</a>
+            </nav>
+            <div class="flex space-x-4">
+                <button id="logoutBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Sidebar Filters -->
+            <div class="lg:w-1/4">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-4">
+                    <h3 class="text-lg font-bold mb-4">Sports Categories</h3>
+                    <div class="space-y-2" id="sportsFilter">
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded filter-active" data-sport="all">
+                            All Sports
+                        </button>
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded hover:bg-gray-100" data-sport="football">
+                            ⚽ Football
+                        </button>
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded hover:bg-gray-100" data-sport="basketball">
+                            🏀 Basketball
+                        </button>
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded hover:bg-gray-100" data-sport="tennis">
+                            🎾 Tennis
+                        </button>
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded hover:bg-gray-100" data-sport="cricket">
+                            🏏 Cricket
+                        </button>
+                        <button class="filter-btn w-full text-left px-4 py-2 rounded hover:bg-gray-100" data-sport="rugby">
+                            🏉 Rugby
+                        </button>
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-4 mt-6">Leagues</h3>
+                    <div class="space-y-2" id="leagueFilter">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="league-checkbox" data-league="premier-league" checked>
+                            <span class="text-sm">Premier League</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="league-checkbox" data-league="champions-league" checked>
+                            <span class="text-sm">Champions League</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="league-checkbox" data-league="nba" checked>
+                            <span class="text-sm">NBA</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="league-checkbox" data-league="atp" checked>
+                            <span class="text-sm">ATP Tennis</span>
+                        </label>
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-4 mt-6">Bet Types</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="bet-type-checkbox" data-type="match-winner" checked>
+                            <span class="text-sm">Match Winner</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="bet-type-checkbox" data-type="over-under" checked>
+                            <span class="text-sm">Over/Under</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="bet-type-checkbox" data-type="handicap" checked>
+                            <span class="text-sm">Handicap</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-4">
+                        <h1 class="text-2xl font-bold text-gray-800">Sports Betting</h1>
+                        <div class="flex space-x-4 mt-4 md:mt-0">
+                            <select class="px-4 py-2 border border-gray-300 rounded-lg" id="sortSelect">
+                                <option value="time">Sort by Time</option>
+                                <option value="popularity">Sort by Popularity</option>
+                                <option value="odds">Sort by Best Odds</option>
+                            </select>
+                            <div class="flex bg-gray-100 rounded-lg p-1">
+                                <button class="view-btn px-4 py-2 rounded bg-white shadow-sm" data-view="list">List</button>
+                                <button class="view-btn px-4 py-2 rounded" data-view="grid">Grid</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-blue-600">248</div>
+                            <div class="text-sm text-gray-600">Live Events</div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-green-600">1,432</div>
+                            <div class="text-sm text-gray-600">Upcoming Events</div>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-purple-600">15</div>
+                            <div class="text-sm text-gray-600">Sports Available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search teams, leagues, or events..." 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Matches Container -->
+                <div id="matchesContainer">
+                    <!-- Football Matches -->
+                    <div class="sport-section" data-sport="football">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b719b5cb-1531-498a-8f8c-e1feec4672a0.png" alt="Football" class="w-8 h-8 mr-3">
+                            Football
+                        </h2>
+                        
+                        <!-- Premier League -->
+                        <div class="league-section bg-white rounded-lg shadow-lg mb-6" data-league="premier-league">
+                            <div class="bg-gray-50 px-6 py-3 rounded-t-lg border-b">
+                                <h3 class="font-semibold flex items-center">
+                                    <div class="league-logo bg-purple-600 mr-3"></div>
+                                    Premier League
+                                </h3>
+                            </div>
+                            
+                            <div class="p-6 space-y-4">
+                                <div class="match-card bg-gray-50 p-4 rounded-lg" data-match="football">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Today 15:00</span>
+                                            <span class="text-gray-500 text-sm">Premier League</span>
+                                        </div>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">+127 markets</button>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Manchester City</div>
+                                            <div class="text-sm text-gray-600">Form: W-W-D-W-W</div>
+                                        </div>
+                                        <div class="text-center text-gray-400 font-bold text-lg">
+                                            VS
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Liverpool</div>
+                                            <div class="text-sm text-gray-600">Form: W-L-W-W-D</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-2 mt-4">
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Man City</div>
+                                            <div class="font-bold">1.85</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Draw</div>
+                                            <div class="font-bold">3.40</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Liverpool</div>
+                                            <div class="font-bold">4.20</div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="match-card bg-gray-50 p-4 rounded-lg" data-match="football">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">Tomorrow 17:30</span>
+                                            <span class="text-gray-500 text-sm">Premier League</span>
+                                        </div>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">+89 markets</button>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Arsenal</div>
+                                            <div class="text-sm text-gray-600">Form: W-W-W-L-W</div>
+                                        </div>
+                                        <div class="text-center text-gray-400 font-bold text-lg">
+                                            VS
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Chelsea</div>
+                                            <div class="text-sm text-gray-600">Form: D-W-L-W-W</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-2 mt-4">
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Arsenal</div>
+                                            <div class="font-bold">2.10</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Draw</div>
+                                            <div class="font-bold">3.20</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Chelsea</div>
+                                            <div class="font-bold">3.50</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Champions League -->
+                        <div class="league-section bg-white rounded-lg shadow-lg mb-6" data-league="champions-league">
+                            <div class="bg-gray-50 px-6 py-3 rounded-t-lg border-b">
+                                <h3 class="font-semibold flex items-center">
+                                    <div class="league-logo bg-blue-600 mr-3"></div>
+                                    Champions League
+                                </h3>
+                            </div>
+                            
+                            <div class="p-6 space-y-4">
+                                <div class="match-card bg-gray-50 p-4 rounded-lg" data-match="football">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded">Wed 20:00</span>
+                                            <span class="text-gray-500 text-sm">Champions League</span>
+                                        </div>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">+156 markets</button>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Real Madrid</div>
+                                            <div class="text-sm text-gray-600">Form: W-W-W-W-D</div>
+                                        </div>
+                                        <div class="text-center text-gray-400 font-bold text-lg">
+                                            VS
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">PSG</div>
+                                            <div class="text-sm text-gray-600">Form: W-W-L-W-W</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-2 mt-4">
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Real Madrid</div>
+                                            <div class="font-bold">2.40</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Draw</div>
+                                            <div class="font-bold">3.10</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">PSG</div>
+                                            <div class="font-bold">3.20</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basketball Matches -->
+                    <div class="sport-section" data-sport="basketball">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6c4b0fe2-9ec9-4574-b68c-2ff265f5114e.png" alt="Basketball" class="w-8 h-8 mr-3">
+                            Basketball
+                        </h2>
+                        
+                        <div class="league-section bg-white rounded-lg shadow-lg mb-6" data-league="nba">
+                            <div class="bg-gray-50 px-6 py-3 rounded-t-lg border-b">
+                                <h3 class="font-semibold flex items-center">
+                                    <div class="league-logo bg-red-600 mr-3"></div>
+                                    NBA
+                                </h3>
+                            </div>
+                            
+                            <div class="p-6 space-y-4">
+                                <div class="match-card bg-gray-50 p-4 rounded-lg" data-match="basketball">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded">Tonight 21:00</span>
+                                            <span class="text-gray-500 text-sm">NBA Regular Season</span>
+                                        </div>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">+78 markets</button>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Lakers</div>
+                                            <div class="text-sm text-gray-600">Record: 28-15</div>
+                                        </div>
+                                        <div class="text-center text-gray-400 font-bold text-lg">
+                                            VS
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Warriors</div>
+                                            <div class="text-sm text-gray-600">Record: 25-18</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-2 mt-4">
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Lakers</div>
+                                            <div class="font-bold">1.95</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Total 220.5</div>
+                                            <div class="font-bold">1.90</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Warriors</div>
+                                            <div class="font-bold">1.85</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tennis Matches -->
+                    <div class="sport-section" data-sport="tennis">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a2e5006b-0da8-4012-b430-16e48131fe1f.png" alt="Tennis" class="w-8 h-8 mr-3">
+                            Tennis
+                        </h2>
+                        
+                        <div class="league-section bg-white rounded-lg shadow-lg mb-6" data-league="atp">
+                            <div class="bg-gray-50 px-6 py-3 rounded-t-lg border-b">
+                                <h3 class="font-semibold flex items-center">
+                                    <div class="league-logo bg-green-600 mr-3"></div>
+                                    ATP Tour
+                                </h3>
+                            </div>
+                            
+                            <div class="p-6 space-y-4">
+                                <div class="match-card bg-gray-50 p-4 rounded-lg" data-match="tennis">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded">Tomorrow 14:00</span>
+                                            <span class="text-gray-500 text-sm">ATP Masters</span>
+                                        </div>
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm">+45 markets</button>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Novak Djokovic</div>
+                                            <div class="text-sm text-gray-600">Rank: #1</div>
+                                        </div>
+                                        <div class="text-center text-gray-400 font-bold text-lg">
+                                            VS
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-semibold mb-2">Carlos Alcaraz</div>
+                                            <div class="text-sm text-gray-600">Rank: #2</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-2 mt-4">
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Djokovic</div>
+                                            <div class="font-bold">2.10</div>
+                                        </button>
+                                        <button class="odds-btn text-white py-2 px-3 rounded-lg text-center hover:shadow-lg transition">
+                                            <div class="text-xs opacity-80">Alcaraz</div>
+                                            <div class="font-bold">1.75</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center mt-8">
+                    <button id="loadMoreBtn" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition">
+                        Load More Events
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bet Slip Modal (Hidden by default) -->
+    <div id="betSlipModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Bet Slip</h3>
+                    <button id="closeBetSlip" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="betSlipContent">
+                    <p class="text-gray-500 text-center py-8">No bets selected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock login/signup modals (basic alerts for demo)
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+    window.location.href = 'code.html';
+  });
+        // Sports filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-active'));
+                // Add active class to clicked button
+                this.classList.add('filter-active');
+                
+                const sport = this.dataset.sport;
+                filterBySport(sport);
+            });
+        });
+
+        function filterBySport(sport) {
+            const sportSections = document.querySelectorAll('.sport-section');
+            
+            sportSections.forEach(section => {
+                if (sport === 'all' || section.dataset.sport === sport) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const matchCards = document.querySelectorAll('.match-card');
+            
+            matchCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const parent = card.closest('.sport-section');
+                
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    parent.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Hide sport sections with no visible matches
+            document.querySelectorAll('.sport-section').forEach(section => {
+                const visibleMatches = section.querySelectorAll('.match-card[style*="block"]');
+                if (visibleMatches.length === 0 && searchTerm !== '') {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // League filter functionality
+        document.querySelectorAll('.league-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const league = this.dataset.league;
+                const leagueSection = document.querySelector(`[data-league="${league}"]`);
+                
+                if (leagueSection) {
+                    leagueSection.style.display = this.checked ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Bet slip functionality
+        let betSlip = [];
+
+        document.querySelectorAll('.odds-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const matchCard = this.closest('.match-card');
+                const teams = matchCard.querySelectorAll('.font-semibold');
+                const odds = this.querySelector('.font-bold').textContent;
+                const selection = this.querySelector('.text-xs').textContent;
+                
+                const bet = {
+                    match: teams.length >= 2 ? `${teams[0].textContent} vs ${teams[1].textContent}` : 'Match',
+                    selection: selection,
+                    odds: parseFloat(odds)
+                };
+                
+                addToBetSlip(bet);
+                showBetSlip();
+            });
+        });
+
+        function addToBetSlip(bet) {
+            // Check if bet already exists
+            const existingIndex = betSlip.findIndex(b => 
+                b.match === bet.match && b.selection === bet.selection
+            );
+            
+            if (existingIndex === -1) {
+                betSlip.push({...bet, stake: 10, id: Date.now()});
+                updateBetSlipDisplay();
+            } else {
+                alert('This bet is already in your slip!');
+            }
+        }
+
+        function showBetSlip() {
+            document.getElementById('betSlipModal').classList.remove('hidden');
+            updateBetSlipDisplay();
+        }
+
+        function updateBetSlipDisplay() {
+            const content = document.getElementById('betSlipContent');
+            
+            if (betSlip.length === 0) {
+                content.innerHTML = '<p class="text-gray-500 text-center py-8">No bets selected</p>';
+                return;
+            }
+            
+            let html = '<div class="space-y-4">';
+            let totalOdds = 1;
+            
+            betSlip.forEach(bet => {
+                totalOdds *= bet.odds;
+                html += `
+                    <div class="border rounded-lg p-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="text-sm font-semibold">${bet.match}</div>
+                            <button onclick="removeBet(${bet.id})" class="text-red-500 hover:text-red-700">×</button>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-2">${bet.selection} @ ${bet.odds}</div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs">Stake:</span>
+                            <input type="number" value="${bet.stake}" min="1" 
+                                   class="w-20 px-2 py-1 border rounded text-sm"
+                                   onchange="updateStake(${bet.id}, this.value)">
+                            <span class="text-xs">LSL</span>
+                        </div>
+                        <div class="text-sm font-semibold mt-1">
+                            Potential Win: ${(bet.odds * bet.stake).toFixed(2)} LSL
+                        </div>
+                    </div>
+                `;
+            });
+            
+            const totalStake = betSlip.reduce((sum, bet) => sum + bet.stake, 0);
+            const potentialWin = betSlip.reduce((sum, bet) => sum + (bet.odds * bet.stake), 0);
+            
+            html += `
+                </div>
+                <div class="border-t mt-4 pt-4">
+                    <div class="flex justify-between mb-2">
+                        <span>Total Stake:</span>
+                        <span class="font-bold">${totalStake} LSL</span>
+                    </div>
+                    <div class="flex justify-between mb-4">
+                        <span>Potential Win:</span>
+                        <span class="font-bold text-green-600">${potentialWin.toFixed(2)} LSL</span>
+                    </div>
+                    <button onclick="placeBets()" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+                        Place Bets
+                    </button>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+
+        function removeBet(id) {
+            betSlip = betSlip.filter(bet => bet.id !== id);
+            updateBetSlipDisplay();
+        }
+
+        function updateStake(id, newStake) {
+            const bet = betSlip.find(b => b.id === id);
+            if (bet) {
+                bet.stake = parseFloat(newStake) || 1;
+                updateBetSlipDisplay();
+            }
+        }
+
+        function placeBets() {
+            if (betSlip.length === 0) return;
+            
+            const totalStake = betSlip.reduce((sum, bet) => sum + bet.stake, 0);
+            const potentialWin = betSlip.reduce((sum, bet) => sum + (bet.odds * bet.stake), 0);
+            
+            if (confirm(`Place ${betSlip.length} bet(s) for ${totalStake} LSL?\nPotential win: ${potentialWin.toFixed(2)} LSL`)) {
+                alert('Bets placed successfully! Good luck!');
+                betSlip = [];
+                updateBetSlipDisplay();
+                document.getElementById('betSlipModal').classList.add('hidden');
+            }
+        }
+
+        // Close bet slip modal
+        document.getElementById('closeBetSlip').addEventListener('click', function() {
+            document.getElementById('betSlipModal').classList.add('hidden');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('betSlipModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // View toggle functionality
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.view-btn').forEach(b => {
+                    b.classList.remove('bg-white', 'shadow-sm');
+                });
+                this.classList.add('bg-white', 'shadow-sm');
+                
+                const view = this.dataset.view;
+                toggleView(view);
+            });
+        });
+
+        function toggleView(view) {
+            const container = document.getElementById('matchesContainer');
+            if (view === 'grid') {
+                container.classList.add('grid-view');
+            } else {
+                container.classList.remove('grid-view');
+            }
+        }
+
+        // Sort functionality
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            const sortBy = this.value;
+            sortMatches(sortBy);
+        });
+
+        function sortMatches(sortBy) {
+            // This would implement actual sorting logic
+            console.log('Sorting by:', sortBy);
+            // For demo purposes, just show an alert
+            alert(`Matches sorted by ${sortBy}`);
+        }
+
+        // Load more functionality
+        document.getElementById('loadMoreBtn').addEventListener('click', function() {
+            this.textContent = 'Loading...';
+            this.disabled = true;
+            
+            // Simulate loading
+            setTimeout(() => {
+                this.textContent = 'Load More Events';
+                this.disabled = false;
+                alert('More events loaded!');
+            }, 2000);
+        });
+
+        // Simulate real-time odds updates
+        function updateOdds() {
+            const oddsElements = document.querySelectorAll('.odds-btn .font-bold');
+            oddsElements.forEach(element => {
+                const currentOdds = parseFloat(element.textContent);
+                // Random small change in odds (±0.05)
+                const change = (Math.random() - 0.5) * 0.1;
+                const newOdds = Math.max(1.01, currentOdds + change);
+                element.textContent = newOdds.toFixed(2);
+            });
+        }
+
+        // Update odds every 30 seconds
+        setInterval(updateOdds, 30000);
+
+        // Initialize tooltips for match details
+        document.querySelectorAll('.match-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                // Could show additional match statistics in tooltip
+            });
+        });
+
+        // Quick bet functionality
+        function quickBet(element, amount) {
+            const matchCard = element.closest('.match-card');
+            const teams = matchCard.querySelectorAll('.font-semibold');
+            const odds = element.querySelector('.font-bold').textContent;
+            const selection = element.querySelector('.text-xs').textContent;
+            
+            const bet = {
+                match: teams.length >= 2 ? `${teams[0].textContent} vs ${teams[1].textContent}` : 'Match',
+                selection: selection,
+                odds: parseFloat(odds),
+                stake: amount,
+                id: Date.now()
+            };
+            
+            if (confirm(`Quick bet ${amount} LSL on ${bet.selection}?\nPotential win: ${(bet.odds * amount).toFixed(2)} LSL`)) {
+                alert('Quick bet placed successfully!');
+            }
+        }
+
+        // Add double-click for quick bet
+        document.querySelectorAll('.odds-btn').forEach(btn => {
+            btn.addEventListener('dblclick', function(e) {
+                e.stopPropagation();
+                quickBet(this, 10); // Default quick bet amount
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Press 'B' to open bet slip
+            if (e.key === 'b' || e.key === 'B') {
+                if (betSlip.length > 0) {
+                    showBetSlip();
+                }
+            }
+            
+            // Press 'Escape' to close bet slip
+            if (e.key === 'Escape') {
+                document.getElementById('betSlipModal').classList.add('hidden');
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default active sport
+            filterBySport('all');
+            
+            // Show keyboard shortcuts hint
+            setTimeout(() => {
+                const hint = document.createElement('div');
+                hint.className = 'fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-lg text-sm z-40';
+                hint.innerHTML = `
+                    <div class="font-semibold mb-1">Keyboard Shortcuts:</div>
+                    <div>Press 'B' to open bet slip</div>
+                    <div>Double-click odds for quick bet</div>
+                `;
+                document.body.appendChild(hint);
+                
+                // Remove hint after 5 seconds
+                setTimeout(() => {
+                    hint.remove();
+                }, 5000);
+            }, 3000);
+        });
+
+        // Add to bet slip indicator
+        function showBetSlipIndicator() {
+            let indicator = document.getElementById('betSlipIndicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'betSlipIndicator';
+                indicator.className = 'fixed top-20 right-4 bg-blue-600 text-white px-3 py-2 rounded-full text-sm cursor-pointer z-40';
+                indicator.addEventListener('click', showBetSlip);
+                document.body.appendChild(indicator);
+            }
+            
+            indicator.textContent = `Bet Slip (${betSlip.length})`;
+            indicator.style.display = betSlip.length > 0 ? 'block' : 'none';
+        }
+
+        // Update bet slip indicator when bets are added/removed
+        function addToBetSlip(bet) {
+            const existingIndex = betSlip.findIndex(b => 
+                b.match === bet.match && b.selection === bet.selection
+            );
+            
+            if (existingIndex === -1) {
+                betSlip.push({...bet, stake: 10, id: Date.now()});
+                updateBetSlipDisplay();
+                showBetSlipIndicator();
+            } else {
+                alert('This bet is already in your slip!');
+            }
+        }
+
+        function removeBet(id) {
+            betSlip = betSlip.filter(bet => bet.id !== id);
+            updateBetSlipDisplay();
+            showBetSlipIndicator();
+        }
+    </script>
+</body>
+</html>

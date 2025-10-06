@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucaBets - Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .signup-bg {
+            background: linear-gradient(135deg, #002f6c 0%, #00b4d8 100%);
+        }
+        .form-input:focus {
+            border-color: #00b4d8;
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+        }
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+        .step-active {
+            background-color: #00b4d8;
+            color: white;
+        }
+        .step-completed {
+            background-color: #10b981;
+            color: white;
+        }
+    </style>
+</head>
+<body class="signup-bg min-h-screen py-8">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-2xl mx-auto">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c3ba319d-e653-4deb-9465-16d4eee78e97.png" alt="BetLesotho Logo" class="w-10 h-10 rounded-full" />
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">Join LucaBets</h1>
+                    <p class="text-gray-600">Create your account and start betting today</p>
+                </div>
+
+                <!-- Step Indicator -->
+                <div class="flex justify-center mb-8">
+                    <div class="flex space-x-4">
+                        <div class="step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                        <div class="step-indicator bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                        <div class="step-indicator bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                    </div>
+                </div>
+
+                <form id="signupForm" class="space-y-6">
+                    <!-- Step 1: Personal Information -->
+                    <div id="step1" class="step-content">
+                        <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required 
+                                       class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                       placeholder="Enter your first name">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required 
+                                       class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                       placeholder="Enter your last name">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                   placeholder="Enter your email address">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <div class="flex">
+                                <select class="px-3 py-3 border border-gray-300 rounded-l-lg bg-gray-50">
+                                    <option>+266</option>
+                                    <option>+27</option>
+                                    <option>+267</option>
+                                </select>
+                                <input type="tel" id="phone" name="phone" required 
+                                       class="form-input flex-1 px-4 py-3 border border-gray-300 rounded-r-lg focus:outline-none transition duration-200"
+                                       placeholder="Enter your phone number">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="dateOfBirth" class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Account Security -->
+                    <div id="step2" class="step-content hidden">
+                        <h3 class="text-lg font-semibold mb-4">Account Security</h3>
+                        
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" id="password" name="password" required 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                   placeholder="Create a strong password">
+                            <div class="mt-2">
+                                <div class="text-xs text-gray-500">Password must contain:</div>
+                                <div id="passwordRequirements" class="text-xs space-y-1 mt-1">
+                                    <div class="text-red-500">• At least 8 characters</div>
+                                    <div class="text-red-500">• One uppercase letter</div>
+                                    <div class="text-red-500">• One lowercase letter</div>
+                                    <div class="text-red-500">• One number</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                   placeholder="Confirm your password">
+                        </div>
+
+                        <div>
+                            <label for="securityQuestion" class="block text-sm font-medium text-gray-700 mb-2">Security Question</label>
+                            <select id="securityQuestion" name="securityQuestion" required 
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200">
+                                <option value="">Select a security question</option>
+                                <option value="pet">What was the name of your first pet?</option>
+                                <option value="school">What was the name of your first school?</option>
+                                <option value="city">What city were you born in?</option>
+                                <option value="mother">What is your mother's maiden name?</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="securityAnswer" class="block text-sm font-medium text-gray-700 mb-2">Security Answer</label>
+                            <input type="text" id="securityAnswer" name="securityAnswer" required 
+                                   class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition duration-200"
+                                   placeholder="Enter your answer">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Terms and Verification -->
+                    <div id="step3" class="step-content hidden">
+                        <h3 class="text-lg font-semibold mb-4">Terms & Verification</h3>
+                        
+                        <div class="space-y-4">
+                            <label class="flex items-start space-x-3">
+                                <input type="checkbox" id="terms" name="terms" required class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">
+                                    I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms and Conditions</a> 
+                                    and <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                                </span>
+                            </label>
+
+                            <label class="flex items-start space-x-3">
+                                <input type="checkbox" id="age" name="age" required class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">I confirm that I am 18 years or older</span>
+                            </label>
+
+                            <label class="flex items-start space-x-3">
+                                <input type="checkbox" id="responsible" name="responsible" required class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">I understand the risks of gambling and agree to gamble responsibly</span>
+                            </label>
+
+                            <label class="flex items-start space-x-3">
+                                <input type="checkbox" id="marketing" name="marketing" class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">I would like to receive promotional emails and SMS notifications (optional)</span>
+                            </label>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex">
+                                <svg class="w-5 h-5 text-yellow-500 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                <div class="ml-3">
+                                    <h4 class="text-sm font-medium text-yellow-800">Responsible Gambling</h4>
+                                    <p class="text-sm text-yellow-700 mt-1">
+                                        Gambling should be fun. If you feel it's becoming a problem, 
+                                        please contact our support team or visit responsible gambling resources.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between pt-6">
+                        <button type="button" id="prevBtn" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-400 transition hidden">
+                            Previous
+                        </button>
+                        <div class="flex-1"></div>
+                        <button type="button" id="nextBtn" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition">
+                            Next
+                        </button>
+                        <button type="submit" id="submitBtn" class="bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-6 rounded-lg hover:from-green-700 hover:to-green-800 transition hidden">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-6">
+                    <p class="text-gray-600">Already have an account? 
+                        <a href="login.html" class="text-blue-600 hover:text-blue-500 font-semibold">Sign in here</a>
+                    </p>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="code.html" class="text-sm text-gray-500 hover:text-gray-700">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                indicator.classList.remove('step-active', 'step-completed');
+                if (index + 1 < step) {
+                    indicator.classList.add('step-completed');
+                } else if (index + 1 === step) {
+                    indicator.classList.add('step-active');
+                }
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
+            document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
+            document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
+        }
+
+        // Password validation
+        function validatePassword(password) {
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+            
+            const requirementElements = document.querySelectorAll('#passwordRequirements div');
+            requirementElements[0].className = requirements.length ? 'text-green-500' : 'text-red-500';
+            requirementElements[1].className = requirements.uppercase ? 'text-green-500' : 'text-red-500';
+            requirementElements[2].className = requirements.lowercase ? 'text-green-500' : 'text-red-500';
+            requirementElements[3].className = requirements.number ? 'text-green-500' : 'text-red-500';
+            
+            return Object.values(requirements).every(req => req);
+        }
+
+        // Event listeners
+        document.getElementById('password').addEventListener('input', function() {
+            validatePassword(this.value);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (validateCurrentStep()) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
+            
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    alert(`Please fill in the ${input.name || input.id} field.`);
+                    input.focus();
+                    return false;
+                }
+            }
+            
+            if (currentStep === 2) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!validatePassword(password)) {
+                    alert('Please ensure your password meets all requirements.');
+                    return false;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match.');
+                    document.getElementById('confirmPassword').focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Handle form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+            
+            // Simulate account creation
+            setTimeout(() => {
+                alert('Account created successfully! Please check your email for verification.');
+                window.location.href = 'login.html';
+            }, 3000);
+        });
+
+        // Age validation
+        document.getElementById('dateOfBirth').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            if (age < 18) {
+                alert('You must be 18 or older to create an account.');
+                this.value = '';
+            }
+        });
+
+        // Initialize
+        showStep(1);
+    </script>
+</body>
+</html>
